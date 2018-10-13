@@ -12,6 +12,10 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.ini4j.Config;
+import org.ini4j.Ini;
+import org.ini4j.InvalidFileFormatException;
+
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Trajectory.FitMethod;
@@ -23,16 +27,19 @@ public class PathGen {
 	public static double max_jerk = 10;
 	public static int samples = Trajectory.Config.SAMPLES_HIGH;
 	public static Trajectory.FitMethod fitMethod = FitMethod.HERMITE_CUBIC;
-	public static double period = 0.01;
+	public static double period = 0.05;
 	
 	static int index;
 	
 	static Map<String, Path> path = new HashMap<>();
 	static TankModifier modifier;
 	
+	static Ini pathConfig;
+	
 	public static void main(String[] args) throws FileNotFoundException{
 		long startTime = System.nanoTime();
 		
+		// Generate all path settings
 		initializePaths();
 
 		Trajectory trajectory;
@@ -41,14 +48,31 @@ public class PathGen {
 		Iterator<String> iterator = keySet.iterator();
 		
 		index = 0;
-		File pathfinderDir = new File("Pathfinder");
-		if(!pathfinderDir.exists() || !pathfinderDir.isDirectory()) {
+		File pathfinderDir = new File("Pathfinder/");
+		if(!pathfinderDir.exists()) {
 			System.out.println("Pathfinder Directory doesn't exist. Making directory...");
 			pathfinderDir.mkdir();
 		}
-		File pathNameDir = new File(pathfinderDir, "pathNames.txt");
-		FileOutputStream fos = new FileOutputStream(pathNameDir);
-		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
+		File pathConfigDir = new File(pathfinderDir, "pathConfig.ini");
+		if(!pathConfigDir.exists()) {
+			try {
+				pathConfigDir.createNewFile();
+				System.out.println("pathConfig.ini doesn't exist. Making .ini file...");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		try {
+			pathConfig = new Ini(new File(pathfinderDir, "pathConfig.ini"));
+		} catch (InvalidFileFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		// TO-DO: How to write to global section
 
 		while(iterator.hasNext()) {
 			String key = iterator.next();
@@ -57,12 +81,12 @@ public class PathGen {
 			boolean newPath = false;
 			try {
 				File memoryDir = new File("PathMemory/");
-				if(!memoryDir.exists() || !memoryDir.isDirectory()) {
+				if(!memoryDir.exists()) {
 					System.out.println("PathMemory Directory doesn't exist. Making directory...");
 					memoryDir.mkdir();
 				}
 				File pathMemory = new File(memoryDir, path.get(key).name + ".ser");
-				if(!pathMemory.exists() || !pathMemory.isFile()) {
+				if(!pathMemory.exists()) {
 					System.out.println("No record of previous path.");
 					newPath = true;
 				} else {
@@ -90,8 +114,8 @@ public class PathGen {
 
 				modifier = new TankModifier(trajectory).modify(0.7639);
 				
-				File pathDir = new File("Pathfinder/Paths");
-				if(!pathDir.exists() || !pathDir.isDirectory()) {
+				File pathDir = new File("Pathfinder/Paths/");
+				if(!pathDir.exists()) {
 					System.out.println("Pathfinder Path Directory doesn't exist. Making directory...");
 					pathDir.mkdir();
 				}
@@ -113,8 +137,12 @@ public class PathGen {
 					out.close();
 					fileOut.close();
 					
-					bw.write(path.get(key).name);
-					bw.newLine();
+					// TO-DO: Add Path Configs to file. Only really need max_vel (may change with Pathfinderv2)
+					if(path.get(key).max_vel != max_vel) {
+						
+					} else if(path.get(key).max_vel == max_vel && true) { // remove section if max_vel of path == default max_vel
+						
+					}
 				} catch (FileNotFoundException e) {
 					System.out.println("File not found");
 				} catch (IOException e) {
@@ -122,12 +150,6 @@ public class PathGen {
 				}
 				index++;
 			}
-		}
-		try {
-			bw.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 		
 		System.out.println("Number of Paths Generated: " + index);

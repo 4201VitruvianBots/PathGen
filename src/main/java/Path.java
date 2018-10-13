@@ -88,4 +88,17 @@ public class Path implements Serializable {
 			return false;
 		return true;
 	}
+	
+	public boolean isConfigDefault(Object obj) {
+		if(obj.getClass() != this.getClass())
+			return false;
+		Path testObj = (Path) obj;
+		if(testObj.max_vel != this.max_vel)
+			return false;
+		if(testObj.max_accel != this.max_accel)
+			return false;
+		if(testObj.max_jerk != this.max_jerk)
+			return false;
+		return true;
+	}
 }
