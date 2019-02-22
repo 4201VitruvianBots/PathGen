@@ -28,9 +28,6 @@ dependencies {
     compile group: 'jaci.pathfinder', name: 'Pathfinder-FRCSupport', version: '2019.2.19'
     compile group: 'jaci.jniloader', name: 'JNILoader', version: '1.0.1'
 	compile group: 'org.ini4j', name: 'ini4j', version: '0.5.4'
-	
-	compile files('libs/Jars/Pathfinder-Java-1.8.jar')
-	compile files('libs/Jars/libpathfinderjava.so')
     
     // This dependency is used internally, and not exposed to consumers on their own compile classpath.
     implementation 'com.google.guava:guava:23.0'
