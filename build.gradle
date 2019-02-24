@@ -24,9 +24,14 @@ dependencies {
     // This dependency is exported to consumers, that is to say found on their compile classpath.
     api 'org.apache.commons:commons-math3:3.6.1'
 
-    compile group: 'jaci.pathfinder', name: 'Pathfinder-Java', version: '2019.2.19'
-    compile group: 'jaci.pathfinder', name: 'Pathfinder-FRCSupport', version: '2019.2.19'
-    compile group: 'jaci.jniloader', name: 'JNILoader', version: '1.0.1'
+    compile( "jaci.jniloader:JNILoader:1.0.1" )
+    compile( "jaci.pathfinder:Pathfinder-Java:2019.2.19" )
+
+    compile( "jaci.pathfinder:Pathfinder-JNI:2019.2.19:windowsx86" )
+    compile( "jaci.pathfinder:Pathfinder-JNI:2019.2.19:windowsx86-64" )
+    compile( "jaci.pathfinder:Pathfinder-CoreJNI:2019.2.19:windowsx86" )
+    compile( "jaci.pathfinder:Pathfinder-CoreJNI:2019.2.19:windowsx86-64" )
+
 	compile group: 'org.ini4j', name: 'ini4j', version: '0.5.4'
     
     // This dependency is used internally, and not exposed to consumers on their own compile classpath.
