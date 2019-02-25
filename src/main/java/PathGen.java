@@ -164,5 +164,12 @@ public class PathGen {
 		// Straight Autos
 		path.put("driveStraight", new Path("driveStraight", Waypoints.driveStraight));
 		path.put("driveCalibration", new Path("driveCalibration", Waypoints.driveCalibration));
+		path.put("getOffLevel1", new Path("getOffLevel1", Waypoints.getOffLevel1));
+		path.get("getOffLevel1").max_vel = 2;
+		path.get("getOffLevel1").max_accel = 4;
+
+		// Left Autos
+		path.put("leftToRocket", new Path("leftToRocket", Waypoints.leftToRocket));
+
 	}
 }

@@ -13,4 +13,16 @@ public class Waypoints {
 		new Waypoint(0, 0, 0),
 		new Waypoint(10, 0, 0)
 	};
+
+	public static Waypoint[] getOffLevel1 = {
+		new Waypoint(0, 0, 0),
+		new Waypoint(4, 0, 0)
+	};
+
+	// Left Paths
+	// leftLevel1ToRocket
+	public static Waypoint[] leftToRocket = {
+		new Waypoint(4, 0, 0),
+		new Waypoint(12, 8, 30)
+	};
 }
